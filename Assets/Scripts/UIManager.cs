@@ -3,49 +3,51 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Panels")]
+    public GameObject initialPanel;
+    public GameObject gamePanel;
+    public GameObject gameOverPanel;
+
+    [Header("Texts")]
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI speedText;
-    public TextMeshProUGUI sprintText;
-
-    private int health = 100;
-    private int score = 10000;
-    private int speed = 0;
-    private int sprint = 0;
 
     void Start()
     {
-        UpdateUI();
+        ShowInitialUI();
     }
 
-    public void TakeDamage()
+    // ===== UI FLOW =====
+    public void ShowInitialUI()
     {
-        health -= 10;
-        score -= 100;
-        UpdateUI();
+        initialPanel.SetActive(true);
+        gamePanel.SetActive(false);
+        gameOverPanel.SetActive(false);
     }
 
-    public void Heal()
+    public void ShowGameUI()
     {
-        health += 10;
-        score += 100;
-        UpdateUI();
+        initialPanel.SetActive(false);
+        gamePanel.SetActive(true);
+        gameOverPanel.SetActive(false);
     }
 
-    public void IncreaseSpeed()
+    public void ShowGameOverUI()
     {
-        speed++;
-        if (speed % 5 == 0)
-            sprint++;
-
-        UpdateUI();
+        initialPanel.SetActive(false);
+        gamePanel.SetActive(false);
+        gameOverPanel.SetActive(true);
     }
 
-    void UpdateUI()
+ 
+    public void UpdateHealth(float healthPercent)
     {
-        healthText.text = "Health: " + health;
+        int percent = Mathf.RoundToInt(healthPercent * 100f);
+        healthText.text = "Health: " + percent + "%";
+    }
+
+    public void UpdateScore(int score)
+    {
         scoreText.text = "Score: " + score;
-        speedText.text = "Speed: " + speed;
-        sprintText.text = "Sprint: " + sprint;
     }
 }
